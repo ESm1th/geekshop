@@ -9,7 +9,7 @@ Clone repository
 
 Change directory
 
-`cd geekshop`
+`cd geekshop/geekshop`
 
 Make virtual environment
 
@@ -18,6 +18,10 @@ Make virtual environment
 Install requirements
 
 `pip install -r requirements.txt`
+
+Migrate
+
+`python manage.py migrate`
 
 Run
 
