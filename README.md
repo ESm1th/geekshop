@@ -1,5 +1,5 @@
 # geekshop
-Simple web store app on Djnago
+Simple web store app on Django
 
 
 ### How to start
