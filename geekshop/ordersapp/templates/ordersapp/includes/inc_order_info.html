@@ -1,0 +1,53 @@
+{% load static i18n %}
+
+<div class="order_info">
+    {% if object %}
+        <p>{% trans 'Order #' %}{{ object.id }}</p>
+        <table>
+            <tr>
+                <td>{% trans 'Created: '%}</td>
+                <td>{{ object.created|date:'Y-m-d H:i:s' }}</td>
+            </tr>
+            <tr>
+                <td>{% trans 'Customer: ' %}</td>
+                <td>{{ request.user }}</td>
+            </tr>
+            <tr>
+                <td>{% trans 'Updated: ' %}</td>
+                <td>{{ object.updated|date:'Y-m-d H:i:s' }}</td>
+            </tr>
+            <tr>
+                <td>{% trans 'Status: ' %}</td>
+                <td>{{ object.get_status_display }}</td>
+            </tr>
+            <tr>
+                <td>{% trans 'Total items quantity: ' %}</td>
+                <td><span class="total_items_quantity">{{ object.total_items_quantity }}</span> {% trans 'pc' %}</td>
+            </tr>
+            <tr>
+                <td>{% trans 'Total quantity: ' %}</td>
+                <td><span class="total_quantity">{{ object.total_quantity }}</span> {% trans 'pc' %}</td>
+            </tr>
+            <tr>
+                <td>{% trans 'Total price: ' %}</td>
+                <td>&#8381; <span class="total_price">{{ object.total_price|floatformat }}</span></td>
+            </tr>
+        </table>
+    {% else %}
+        <p>{% trans 'New order' %}</p>
+        <table>
+            <tr>
+                <td>{% trans 'Customer: ' %}</td>
+                <td>{{ request.user }}</td>
+            </tr>
+            <tr>
+                <td>{% trans 'Total items quantity: ' %}</td>
+                <td>{% if basket %}<span class="total_items_quantity">{{ basket.total_items_quantity }}</span>{% else %}0{% endif %} {% trans 'pc' %}</td>
+            </tr>
+            <tr>
+                <td>{% trans 'Total price: ' %}</td>
+                <td>&#8381; {% if basket %}<span class="total_price">{{ basket.total_price|floatformat }}</span>{% else %}0{% endif %}</td>
+            </tr>
+        </table>
+    {% endif %}
+</div>

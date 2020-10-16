@@ -1,0 +1,11 @@
+{% load static i18n %}
+
+{% for link in main_menu %}
+    {% if user.is_authenticated %}
+        {% if not link.get_url == 'accounts:registration' and not link.get_url == 'accounts:login' %}
+            <a href="{% url link.get_url %}">{{ link.title }}</a>
+        {% endif %}
+    {% else %}
+        <a href="{% url link.get_url %}">{{ link.title }}</a>
+    {% endif %}
+{% endfor %}

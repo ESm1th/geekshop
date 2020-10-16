@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block title %}
+    {% trans 'Login' %}
+{% endblock %}
+
+{% block data %}
+    <div class="center">
+        <div class="user-form">
+            <div class="social">
+                <a href="{% url 'social:begin' 'google-oauth2' %}"><i class="fab fa-google-plus-g"></i></a>
+                <a href="{% url 'social:begin' 'vk-oauth2' %}"><i class="fab fa-vk"></i></a>
+            </div>
+            <form action="#" method="post">
+                {% csrf_token %}
+                {{ form }}
+                <button type="submit" class="btn btn-secondary">{% trans 'Log in' %}</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+{% load cache %}
+
+{% block javascript %}
+    <script src="{% static 'ordersapp/js/jquery.formset.js' %}"></script>
+    <script src="{% static 'ordersapp/js/order_scripts.js' %}"></script>
+{% endblock %}
+
+{% block title %}
+    {% trans 'Order' %}
+{% endblock %}
+
+{% block data %}
+
+    {% include 'ordersapp/includes/inc_order_info.html' %}
+    <form class="order_items" action="#" method="post">
+        {% csrf_token %}
+        {{ form }}
+        {{ formset.management_form }}
+        {% for form in formset.forms %}
+            {{ field.errors.as_ul }}
+            <div class="order_item">
+                {% for field in form %}
+                    {% if field.name != 'price' %}
+                        {% if field.name == 'item'%}
+                            {% cache 3600 orderitemform_product field.value %}
+                                {{ field }}
+                            {% endcache %}
+                        {% else %}
+                            {{ field }}
+                        {% endif %}
+                    {% else %}
+                        {% if field.value %}
+                            <p class="price">{{ field.value|floatformat }}</p>
+                        {% else %}
+                            <p class="price">0</p>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+                {% if form.instance.pk %}
+                    <a href="{% url 'ordersapp:item_delete' form.instance.pk %}" class="btn btn-secondary">{% trans 'Delete' %}</a>
+                {% endif %}
+            </div>
+        {% endfor %}
+
+        <button type="submit" class="btn btn-secondary">
+            {% if request.resolver_match.url_name == 'items_update' %}
+                {% trans 'Save' %}
+            {% else %}
+                {% trans 'Create' %}
+            {% endif %}
+        </button>
+    </form>
+
+
+{% endblock %}

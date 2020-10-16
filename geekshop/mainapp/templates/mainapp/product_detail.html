@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block title %}
+    {% trans 'Product detail' %}
+{% endblock %}
+
+{% block data %}
+
+<div class="product">
+    <div class="product-pictures">
+        <div class="hero-picture">
+            <img src="{{ object.pictures.all.0.picture.url }}" alt="{{ object.title }}">
+        </div>
+        {% if similar %}
+            <p>{% trans 'Similar products' %}</p>
+            <div class="similar-pictures">
+                {% for product in similar|slice:":3" %}
+                    <div class="sim-pic">
+                        <a href="{{ product.get_absolute_url }}"><img src="{{ product.pictures.all.0.picture.url }}" alt="{{ product.title }}"></a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+    <div class="product-data">
+        <p>{% trans 'Manufacturer: ' %}<span>{{ object.creator }}</span></p>
+        <p>{% trans 'Title: ' %}<span>{{ object.title }}</span></p>
+        <p>{% trans 'Category: ' %}<span>{{ object.category }}</span></p>
+        <p>{% trans 'Quantity on stock: ' %}<span>{{ object.quantity }}</span></p>
+        <p>{% trans 'Price: ' %}<span>&#8381;{{ object.price }}</span></p>
+        <form action="#" method="post">
+            {% csrf_token %}
+            {{ form }}
+            <button type="submit" class="btn btn-secondary">{% trans 'Add to cart' %}</button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,10 @@
+{% load i18n %}
+
+<div class="index-page-pictures-block">
+    <div class="picture">
+        <img src="{{ object.pictures.all.0.picture.url }}" alt="{{ object.title }}">
+        <a href="{{ object.get_absolute_url }}">{% trans 'Detail view'|upper %}</a>
+    </div>
+    <p>{{ object.creator }} {{ object.title }}</p>
+    <p>{{ object.price }}&#8381;</p>
+</div>

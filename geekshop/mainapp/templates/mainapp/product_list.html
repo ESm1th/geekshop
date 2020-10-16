@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block javascript %}
+    <script src="{% static 'mainapp/js/mainapp_scripts.js' %}"></script>
+{% endblock %}
+
+{% block title %}
+    {% trans 'Catalogue' %}
+{% endblock %}
+
+{% block data %}
+    
+    <div class="products">
+        <div class="categories">
+            <ul>
+                <li>{% trans 'Categories' %}</li>
+                <li>
+                    <a href="{% url 'mainapp:products' %}" class="{% if not request.resolver_match.kwargs.pk %}checkmark{% endif %}">{% trans 'All' %}</a>
+                </li>
+                {% for category in categories %}
+                    <li>
+                        <a href="{% url 'mainapp:products_category' category.id %}" class="{% if category.id == request.resolver_match.kwargs.pk %}checkmark{% endif %}">{{ category.title }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="category_list">
+            {% include 'mainapp/includes/inc_product_list.html' %}
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block title %}
+    {% trans 'Your orders' %}
+{% endblock %}
+
+{% block data %}
+
+    <div class="orders">
+        <p>{% trans 'Your orders' %}</p>
+        {% if object_list %}
+            <div class="table_title">
+                <p>{% trans 'Id' %}</p>
+                <p>{% trans 'Created' %}</p>
+                <p>{% trans 'Updated' %}</p>
+                <p>{% trans 'Status' %}</p>
+                <p>{% trans 'Actions' %}</p>
+            </div>
+            {% for object in object_list %}
+                <div class="order_row">
+                    <p>{{ object.id }}</p>
+                    <p>{{ object.created|date:'Y-m-d H:i:s' }}</p>
+                    <p>{{ object.updated|date:'Y-m-d H:i:s' }}</p>
+                    <p>{{ object.get_status_display }}</p>
+                    <div class="buttons">
+                        <a href="{% url 'ordersapp:detail' object.id %}" class="btn btn-secondary">{% trans 'Detail' %}</a>
+                        {% if object.status == 'FM' %}
+                            <a href="{% url 'ordersapp:delete' object.id %}" class="btn btn-secondary">{% trans 'Delete' %}</a>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>{% trans 'You have not orders yet.' %}</p>
+        {% endif %}
+    </div>
+
+{% endblock %}

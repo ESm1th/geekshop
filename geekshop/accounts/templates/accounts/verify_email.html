@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block title %}
+    {% trans 'Verify account' %}
+{% endblock %}
+
+{% block data %}
+    <div class="center">
+        {% if messages %}
+            {% for message in messages %}
+                {% if message.tags == 'success' %}
+                    <p>{% trans 'Your account was ' %}{{ message }} {% trans ' successfully.' %}</p>
+                    <p>
+                        {% trans 'Now, you can ' %}
+                        <a href="{% url 'accounts:login' %}">
+                        {% trans 'login' %}</a>
+                        {% trans 'into system.' %}
+                    </p>
+                {% elif message.tags == 'warning' %}
+                    <p>{% trans 'Your activation key has expired or key is wrong.' %}</p>
+                    <p>{{ message }}</p>
+                    <p>{% trans 'Please, check your mail.' %}</p>
+                    <a href="{% url 'mainapp:main' %}">{% trans 'Go to main page.' %}</a>
+                {% elif message.tags == 'error' %}
+                    <p>{{ message }}</p>
+                    <div class="user-form">
+                        <form action="{% url 'mainapp:main' %}">
+                            <label for="email">{% trans 'Your email' %}</label>
+                            <input id="email" type="email" class="form-control">
+                            <label for="message">{% trans 'Your message' %}</label>
+                            <textarea id="message" type="textarea" rows="4" cols="50" class="form-control" name="#"></textarea>
+                            <button type="submit" class="btn btn-secondary">{% trans 'Send' %}</button>
+                        </form>
+                    </div>
+                {% elif message.tags == 'info' %}
+                    <p>{{ message }}</p>
+                    <a href="{% url 'mainapp:main' %}">{% trans 'Go to main page.' %}</a>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    </div>
+{% endblock %}

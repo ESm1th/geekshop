@@ -1,0 +1,9 @@
+{% load static i18n %}
+
+{% if obj_pages %}
+    {% for object_list in obj_pages %}
+        <div class="index-page">
+            {% include 'mainapp/includes/inc_index_products.html' %}
+        </div>
+    {% endfor %}
+{% endif %}

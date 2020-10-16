@@ -1,0 +1,171 @@
+{% load static i18n %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <link rel="stylesheet" href="{% static 'mainapp/css/style.css' %}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.0/css/all.css" integrity="sha384-aOkxzJ5uQz7WBObEZcHvV5JvRW3TUc2rNPA7pe3AwnsUohiw1Vj2Rgx2KSOkF5+h" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Maven+Pro" rel="stylesheet">
+    
+    <script src="{% static 'mainapp/js/jquery-3.3.1.js' %}"></script>
+    <script src="{% static 'mainapp/js/bootstrap.bundle.min.js' %}"></script>
+
+    {% block javascript %}
+    {% endblock %}
+    
+    <title>
+    	{% block title%}
+    		Base
+    	{% endblock %}	
+	</title>
+
+</head>
+
+<body>
+
+    <div class="content">
+
+        <div class="header">
+
+            <div class="header-top">
+                {% if user.is_authenticated %}
+                <div class="dropdown show">
+                    <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    {% trans 'Your actions' %}
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <a class="dropdown-item" href="{% url 'accounts:update' %}">{% trans 'My account' %}</a>
+                        <a class="dropdown-item" href="{% url 'ordersapp:list' %}">{% trans 'Orders' %}</a>
+                        <a class="dropdown-item" href="{% url 'basketapp:basket_items' %}">{% trans 'Basket' %}</a>
+                        <a class="dropdown-item" href="{% url 'accounts:logout' %}">{% trans 'Logout' %}</a>
+                    </div>
+                </div>
+                    {% if messages %}
+                        {% for message in messages %}
+                            <p>{{ message }}</p>
+                        {% endfor %}
+                    {% endif %}
+                    <p>{% trans 'You are logged in as' %} <span>{{ user.username }}</span></p>
+                {% else %}
+                    {% if messages %}
+                        {% for message in messages %}
+                            <p class="logout_message">{{ message }}</p>
+                        {% endfor %}
+                    {% endif %}
+                {% endif %}
+            </div>
+
+            <div class="header-middle">
+
+                <div class="header-search">
+                    <form method="get">
+                        <input type="search" class="form-control" placeholder="Search">
+                        <button type="submit" class="search-button">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </form>
+                </div>
+
+                <div class="logo">
+                    <a href="{% url 'mainapp:main' %}">Sneakers shop</a>
+                </div>
+
+                <div class="basket">
+                    {% if user.is_authenticated %}
+                        <p>{% trans 'Basket'|upper %}</p>
+                        <p>/</p>
+                        <p class="price">
+                            &#8381;
+                            {% with summary=basket.get_summary %}
+                                <span>
+                                    {% if summary.total_price %}
+                                        {{ summary.total_price }}
+                                    {% else %}
+                                        0
+                                    {% endif %}
+                                </span>
+                            </p>
+                            <div class="card-pic">
+                                <img src="{% static 'mainapp/images/shopping-bag.png' %}" alt="{% trans 'shopping-bag' %}">
+                                <p>
+                                    {% if summary.total_items_quantity %}
+                                        {{ summary.total_items_quantity }}
+                                    {% else %}
+                                        0
+                                    {% endif %}
+                                </p>
+                            {% endwith %}
+                        </div>
+                    {% else %}
+                    {% endif %}
+                </div>
+
+            </div>
+
+            <div class="header-bottom">
+            	{% include 'includes/inc_menu_links.html' %}
+            </div>
+
+        </div>
+
+        <div class="data">
+            	{% block data %}
+            	{% endblock %}
+        </div>
+
+        <div class="footer">
+        
+            <div class="footer-top">
+
+                <div class="information">
+                    <p>Information</p>
+                    <a href="#">Our stores</a>
+                    <a href="#">Delivery</a>
+                    <a href="#">Returns</a>
+                    <a href="#">Terms & conditions</a>
+                </div>
+
+                <div class="about">
+                    <p>About us</p>
+                    <p>
+                        Sneakers shop offers a huge selection<br>
+                        of sneakers for every taste and choice<br>
+                        that we send anywhere with<br>
+                        just-in-time principle.Try it.                    
+                    </p>
+                </div>
+
+                <div class="contact">
+                    <p>Contact</p>
+                    <p><span>Address:</span> Russia, Saint-Petersburg,<br>
+                    Marata street 6.</p>
+                    <p><span>Phone:</span> 8-800-123-45-67</p>
+                    <p><span>Email:</span> sneakers@gmail.com</p>
+                </div>
+            
+            </div>
+
+            <div class="footer-middle">
+                <a href="#"><i class="fab fa-vk"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-google-plus-g"></i></a>
+                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+
+            <div class="footer-bottom">
+                <p>2018 Sneakers shop</p>
+                <p>Developed by Evgeniy Kuznetsov. Geekuniversity 06/2018</p>                
+                <p>Powered by Django</p>
+            </div>
+
+        </div>
+
+    </div>
+    
+</body>
+</html>

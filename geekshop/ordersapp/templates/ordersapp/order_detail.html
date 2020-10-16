@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block title %}
+    {% trans 'Order #' %}{{ object.id }}
+{% endblock %}
+
+{% block data %}
+    {% include 'ordersapp/includes/inc_order_info.html' %}
+    <div class="order_detail">
+        <div class="table_header">
+            <p>{% trans 'Image' %}</p>
+            <p>{% trans 'Title' %}</p>
+            <p>{% trans 'Quantity' %}</p>
+            <p>{% trans 'Price' %}</p>
+        </div>
+        {% for object in object.order_items.all %}
+            <div class="order_detail_item">
+                <div class="order_item_pic">
+                    <img src="{{ object.item.pictures.all.0.picture.url }}" alt="{{ object.item.creator }}">
+                </div>
+                <div class="order_detail_item_data">
+                    <p>{{ object.item.creator }}</p>
+                    <p>{{ object.item.title }}</p>
+                </div>
+                <p>{{ object.quantity }} {% trans 'pc' %}</p>
+                <p>&#8381; {{ object.price|floatformat }}</p>
+            </div>
+        {% endfor %}
+        <div class="order_detail_buttons">
+            {% if object.status == 'FM' %}
+                <a class="btn btn-secondary" href="{% url 'ordersapp:status_update' object.id %}" >{% trans 'Buy' %}</a>
+                <a class="btn btn-secondary" href="{% url 'ordersapp:items_update' object.id %}">{% trans 'Edit' %}</a>
+                <a class="btn btn-secondary" href="{% url 'ordersapp:delete' object.id %}">{% trans 'Delete' %}</a>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

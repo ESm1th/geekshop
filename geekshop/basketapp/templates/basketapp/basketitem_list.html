@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block javascript %}
+    <script src="{% static 'basketapp/js/jquery-3.3.1.js' %}" async></script>
+    <script src="{% static 'basketapp/js/basket_scripts.js' %}" async></script>
+{% endblock %}
+
+{% block title %}
+    {% trans 'Basket items' %}
+{% endblock %}
+
+{% block data %}
+
+    <div class="center user_card">
+        <p class="basket_index">
+        {% if basket.get_items %}
+            {% trans 'Your active cart #' %}{{ card.id }}
+        {% else %}
+            {% trans 'You have not active cart yet' %}
+        {% endif %}
+        </p>
+        <div class="basket_items">
+            {% if basket.get_items %}
+                {% for object in basket.get_items %}
+                    <div class="basket_item">
+                        <div class="sim-pic">
+                            <a href="{{ object.item.get_absolute_url }}">
+                                <img src="{{ object.item.pictures.all.0.picture.url }}" alt="{{ object.item.title }}">
+                            </a>
+                        </div>
+                        <div class="basket_item_data">
+                            <p>{{ object.item.creator }}</p>
+                            <p>{{ object.item.title }}</p>
+                        </div>
+                        <input class="form-control" type="number" min="0" name="{{ object.pk }}" value="{{ object.quantity }}" url="{% url 'basketapp:edit' object.pk %}">
+                        <p>&#8381; <span>{{ object.price }}</span></p>
+                        <form action="{% url 'basketapp:item_delete' object.id %}">
+                            <button type="submit" class="btn btn-secondary">{% trans 'Delete' %}</button>
+                        </form>
+                    </div>
+                {% endfor %}
+                <a href="{% url 'ordersapp:create' %}" class="btn btn-secondary">{% trans 'Create order' %}</a>
+            {% else %}
+                <p>{% trans 'if you want to add items in cart, please go to ' %}<a href="{% url 'mainapp:products' %}">{% trans 'catalogue' %}</a>{% trans ' and click button "add to cart" if you like the product.' %}</p>
+            {% endif %}
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,17 @@
+{% load static i18n %}
+
+<div class="index-page-pictures">
+    {% if range %}
+        {% for object in object_list|slice:range %}
+            {% include 'mainapp/includes/inc_picture_block.html' %}
+        {% empty %}
+            <p>{% trans 'Sorry, the list of products is empty!' %}</p>
+        {% endfor %}
+    {% else %}
+        {% for object in object_list %}
+            {% include 'mainapp/includes/inc_picture_block.html' %}
+        {% empty %}
+            <p>{% trans 'Sorry, the list of products is empty!' %}</p>
+        {% endfor %}
+    {% endif %}
+</div> 
